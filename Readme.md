@@ -1,0 +1,1 @@
+[![Build Status](https://dev.azure.com/fosouza/fosouza/_apis/build/status/fosouzadev.fosouza.string.extensions?branchName=main)](https://dev.azure.com/fosouza/fosouza/_build/latest?definitionId=3&branchName=main)
