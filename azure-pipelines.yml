@@ -31,3 +31,24 @@ steps:
   inputs:
     command: 'test'
     arguments: '--configuration $(buildConfiguration)'
+
+- task: NuGetCommand@2
+  displayName: 'dotnet pack $(buildConfiguration)'
+  inputs:
+    command: pack
+    ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+      arguments: '--configuration $(buildConfiguration)'
+    ${{ if ne(variables['Build.SourceBranchName'], 'master') }}:
+      arguments: '--configuration $(buildConfiguration) --version-suffix rc$(Build.BuildNumber)'
+    packagesToPack: '**/*.csproj'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
+
+- task: NuGetAuthenticate@0
+  displayName: 'NuGet Authenticate'
+
+- task: NuGetCommand@2
+  displayName: 'NuGet push'
+  inputs:
+    command: push
+    publishVstsFeed: 'fosouza/fosouza'
+    allowPackageConflicts: false
