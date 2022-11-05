@@ -13,12 +13,21 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-#- script: dotnet build --configuration $(buildConfiguration)
-#  displayName: 'dotnet build $(buildConfiguration)'
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
   inputs:
-    command: 'build'
+    command: 'restore'
+    feedsToUse: 'select'
+    vstsFeed: 'fosouza'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet build $(buildConfiguration)'
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test $(buildConfiguration)'
   inputs:
     command: 'test'
+    arguments: '--configuration $(buildConfiguration)'
